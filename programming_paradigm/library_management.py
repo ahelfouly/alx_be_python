@@ -22,29 +22,24 @@ class Book:
 
 class Library:
     def __init__(self):
-        self._books = {}
+        self._books = []  # Private list to store Book instances
 
     def add_book(self, book):
-        self._books[book.title] = book
+        self._books.append(book)
 
     def check_out_book(self, title):
-        if title in self._books:
-            book = self._books[title]
-            if book.check_out():
-                return f"You have checked out '{title}'."
-            else:
-                return f"'{title}' is currently checked out."
-        return f"'{title}' not found in the library."
+        for book in self._books:
+            if book.title == title:
+                return book.check_out()
+        return False
 
     def return_book(self, title):
-        if title in self._books:
-            book = self._books[title]
-            if book.return_book():
-                return f"You have returned '{title}'."
-            else:
-                return f"'{title}' was not checked out."
-        return f"'{title}' not found in the library."
+        for book in self._books:
+            if book.title == title:
+                return book.return_book()
+        return False
 
     def list_available_books(self):
-        available_books = [title for title, book in self._books.items() if book.is_available()]
-        return available_books if available_books else "No books are available."
+        for book in self._books:
+            if book.is_available():
+                print(f"{book.title} by {book.author}")
